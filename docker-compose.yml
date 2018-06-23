@@ -1,66 +1,61 @@
-version: '3.3'
-
-networks:
-  graylog:
-    driver: overlay
-    attachable: true
-
-volumes:
-    graylog: {}
-    elasticsearch: {}
-    mongodb: {}
-
-configs:
-  graylog_config:
-    file: graylog
-  graylog_log4j2:
-    file: log4j2
-
-services:
-  mongodb:
-    image: "mongo:3"
-    volumes:
-      - mongodb:/data/db
-    networks:
-      - graylog
-
-  elasticsearch:
-    image: docker.elastic.co/elasticsearch/elasticsearch:5.5.1
-    volumes:
-      - elasticsearch:/usr/share/elasticsearch/data
-    environment:
-      - http.host=0.0.0.0
-      - transport.host=localhost
-      - network.host=0.0.0.0
-      - xpack.security.enabled=false
-      - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
-    ulimits:
-      memlock:
-        soft: -1
-        hard: -1
-    ports:
-      - "9200:9200"
-      - "9300:9300"
-    networks:
-      - graylog
-
-  graylog:
-    image: "graylog/graylog:2.4"
-    volumes:
-      - graylog:/usr/share/graylog/data  
-    configs:
-      - source: graylog_config
-      - target: /usr/share/graylog/data/config/graylog.conf
-      - source: graylog_log4j2
-      - target: /usr/share/graylog/data/config/log4j2.xml
-    environment:
-      TZ: America/Sao_Paulo
-      ROOT_TIMEZONE: America/Sao_Paulo
-      GRAYLOG_PASSWORD_SECRET: devops_agv123456
-      GRAYLOG_ROOT_PASSWORD_SHA2: 27c811c161d7d5def25d3a6bb200edd90d083c0f7580f6a3de668cbc9ae19c9b
-      GRAYLOG_WEB_ENDPOINT_URI: http://127.0.0.1:9000/api
-    ports:
-      - "9000:9000"
-      - "12209:12209/udp"
-    networks:
-      - graylog
+  1 version: '3.3'
+  2
+  3 networks:
+  4   graylog:
+  5     driver: overlay
+  6     attachable: true
+  7
+  8 volumes:
+  9     graylog: {}
+ 10     elasticsearch: {}
+ 11     mongodb: {}
+ 12
+ 13 configs:
+ 14   graylog_config:
+ 15     file: ./graylog.conf
+ 16   graylog_log4j2:
+ 17     file: ./log4j2.xml
+ 18
+ 19 services:
+ 20   mongo:
+ 21     image: mongo:3
+ 22     volumes:
+ 23       - mongodb:/data/db
+ 24     networks:
+ 25       - graylog
+ 26
+ 27   elasticsearch:
+ 28     image: docker.elastic.co/elasticsearch/elasticsearch:5.5.1
+ 29     volumes:
+ 30       - elasticsearch:/usr/share/elasticsearch/data
+ 31     environment:
+ 32       - http.host=0.0.0.0
+ 33       - transport.host=localhost
+ 34       - network.host=0.0.0.0
+ 35       - xpack.security.enabled=false
+ 36       - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
+ 37     ulimits:
+ 38       memlock:
+ 39         soft: -1
+ 40         hard: -1
+ 41     ports:
+ 42       - "9200:9200"
+ 43       - "9300:9300"
+ 44     networks:
+ 45       - graylog
+ 46
+ 47   graylog:
+ 48     image: graylog/graylog:2.4
+ 49     volumes:
+ 50       - graylog:/usr/share/graylog/data/
+ 51     environment:
+ 52       TZ: America/Sao_Paulo
+ 53       ROOT_TIMEZONE: America/Sao_Paulo
+ 54       GRAYLOG_PASSWORD_SECRET: devops_agv123456
+ 55       GRAYLOG_ROOT_PASSWORD_SHA2: 27c811c161d7d5def25d3a6bb200edd90d083c0f7580f6a3de668cbc9ae19c9b
+ 56       GRAYLOG_WEB_ENDPOINT_URI: http://127.0.0.1:9000/api
+ 57     ports:
+ 58       - "9000:9000"
+ 59       - "12209:12209/udp"
+ 60     networks:
+ 61       - graylog
