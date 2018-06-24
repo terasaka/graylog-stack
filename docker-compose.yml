@@ -55,6 +55,13 @@ services:
       mode: replicated
       replicas: 1
       placement:
-        constraints: [node.hostname == manager1]
+        constraints:
+          - node.role == manager
+      resources:
+        limits:
+          memory: 1024M
+        reservations:
+          memory: 512M
+
     networks:
       - graylog
