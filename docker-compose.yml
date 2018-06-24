@@ -43,11 +43,11 @@ services:
     volumes:
       - graylog:/usr/share/graylog/data/
     environment:
-      TZ: America/Sao_Paulo
-      ROOT_TIMEZONE: America/Sao_Paulo
-      GRAYLOG_PASSWORD_SECRET: devops_agv123456
-      GRAYLOG_ROOT_PASSWORD_SHA2: 27c811c161d7d5def25d3a6bb200edd90d083c0f7580f6a3de668cbc9ae19c9b
-      GRAYLOG_WEB_ENDPOINT_URI: ${GRAYLOG_WEB:-http://127.0.0.1:9000/api}
+      - TZ=America/Sao_Paulo
+      - ROOT_TIMEZONE=America/Sao_Paulo
+      - GRAYLOG_PASSWORD_SECRET=admin
+      - GRAYLOG_ROOT_PASSWORD_SHA2=8c6976e5b5410415bde908bd4dee15dfb167a9c873fc4bb8a81f6f2ab448a918
+      - GRAYLOG_WEB_ENDPOINT_URI=${GRAYLOG_WEB:-http://127.0.0.1:9000/api}
     ports:
       - "9000:9000"
       - "12209:12209/udp"
@@ -59,7 +59,7 @@ services:
           - node.role == manager
       resources:
         limits:
-          memory: 1024M
+          memory: 2048M
         reservations:
           memory: 512M
 
