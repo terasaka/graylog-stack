@@ -57,5 +57,10 @@ services:
     ports:
       - "9000:9000"
       - "12209:12209/udp"
+    deploy:
+      mode: replicated
+      replicas: 1
+      placement:
+        constraints: [node.role == manager]
     networks:
       - graylog
