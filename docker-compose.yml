@@ -45,8 +45,8 @@ services:
     environment:
       - TZ=America/Sao_Paulo
       - ROOT_TIMEZONE=America/Sao_Paulo
-      - GRAYLOG_PASSWORD_SECRET=admin
-      - GRAYLOG_ROOT_PASSWORD_SHA2=8c6976e5b5410415bde908bd4dee15dfb167a9c873fc4bb8a81f6f2ab448a918
+      - GRAYLOG_PASSWORD_SECRET=changemegraylogadmin
+      - GRAYLOG_ROOT_PASSWORD_SHA2=d1325624943c853b1ccbad17f57bd7f19fbed5dc67d3ceb50fe31f331329666a
       - GRAYLOG_WEB_ENDPOINT_URI=${GRAYLOG_WEB:-http://127.0.0.1:9000/api}
     ports:
       - "9000:9000"
