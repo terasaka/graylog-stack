@@ -10,12 +10,6 @@ volumes:
     elasticsearch: {}
     mongodb: {}
 
-configs:
-  graylog_config:
-    file: ./graylog.conf
-  graylog_log4j2:
-    file: ./log4j2.xml
-
 services:
   mongo:
     image: mongo:3
@@ -25,7 +19,7 @@ services:
       - graylog
 
   elasticsearch:
-    image: docker.elastic.co/elasticsearch/elasticsearch:5.5.1
+    image: docker.elastic.co/elasticsearch/elasticsearch:5.6.3
     volumes:
       - elasticsearch:/usr/share/elasticsearch/data
     environment:
@@ -45,7 +39,7 @@ services:
       - graylog
 
   graylog:
-    image: graylog/graylog:2.4
+    image: graylog/graylog:2.4.0-1
     volumes:
       - graylog:/usr/share/graylog/data/
     environment:
@@ -53,7 +47,7 @@ services:
       ROOT_TIMEZONE: America/Sao_Paulo
       GRAYLOG_PASSWORD_SECRET: devops_agv123456
       GRAYLOG_ROOT_PASSWORD_SHA2: 27c811c161d7d5def25d3a6bb200edd90d083c0f7580f6a3de668cbc9ae19c9b
-      GRAYLOG_WEB_ENDPOINT_URI: http://127.0.0.1:9000/api
+      GRAYLOG_WEB_ENDPOINT_URI: ${GRAYLOG_WEB:-http://127.0.0.1:9000/api}
     ports:
       - "9000:9000"
       - "12209:12209/udp"
@@ -61,6 +55,6 @@ services:
       mode: replicated
       replicas: 1
       placement:
-        constraints: [node.role == manager]
+        constraints: [node.hostname == manager1]
     networks:
       - graylog
